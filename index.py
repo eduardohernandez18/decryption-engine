@@ -10,6 +10,7 @@ dic = {
     '/': '4014',
     '(': '404A',
     ')': '404B',
+    '+': '4010',
     'A': '4643',
     'B': '4640',
     'C': '4641',
@@ -48,7 +49,7 @@ dic = {
     '9': '414B'
 }
 
-wb = openpyxl.load_workbook('data1.xlsx')
+wb = openpyxl.load_workbook('data2.xlsx')
 ws = wb.active
 json_data = []
 
@@ -61,7 +62,7 @@ for row in ws.iter_rows(min_row=2, values_only=True):
         expected_decoded = ''
         i = 0
         while i < len(encoded):
-            chunk1 = encoded[i:i+12] if i + 12 < len(encoded) else None
+            chunk1 = encoded[i:i+12] if i + 12 <= len(encoded) else None
             chunk2 = encoded[i:i+4]
             k = None
             
@@ -76,6 +77,6 @@ for row in ws.iter_rows(min_row=2, values_only=True):
                 break
           
         if expected_decoded != decoded:
-            print(f"row {ws.max_row} wrong! {encoded} to {decoded}, expecting: {expected_decoded}")
+            print(f"row {ws.max_row} wrong! '{encoded}' to '{decoded}', expecting: '{expected_decoded}'")
 
 wb.close()

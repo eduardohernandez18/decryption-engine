@@ -5,6 +5,7 @@ const dic = {
   '/': '4014',
   '(': '404A',
   ')': '404B',
+  '+': '4010',
   'A': '4643',
   'B': '4640',
   'C': '4641',
@@ -46,7 +47,7 @@ const dic = {
 const _ = require('lodash');
 const XLSX = require('xlsx');
 
-const workbook = XLSX.readFile('data1.xlsx');
+const workbook = XLSX.readFile('data2.xlsx');
 const sheetName = workbook.SheetNames[0];
 const sheet = workbook.Sheets[sheetName];
 const jsonData = XLSX.utils.sheet_to_json(sheet);
@@ -57,7 +58,7 @@ jsonData.forEach(({encoded, decoded}, idx) => {
   } else {
     let expectedDecoded = '';
     for (let i = 0; i < encoded.length;) {
-      const chunk1 = i + 12 < encoded.length ? encoded.slice(i, i + 12) : undefined;
+      const chunk1 = i + 12 <= encoded.length ? encoded.slice(i, i + 12) : undefined;
       const chunk2 = encoded.slice(i, i + 4);
       let k;
 
@@ -72,7 +73,7 @@ jsonData.forEach(({encoded, decoded}, idx) => {
     }
   
     if (expectedDecoded !== decoded) {
-      console.log(`row ${idx + 1} wrong! ${encoded} to ${decoded}, expecting: ${expectedDecoded}`);
+      console.log(`row ${idx + 1} wrong! "${encoded}" to "${decoded}", expecting: "${expectedDecoded}"`);
     }
   }
 });
